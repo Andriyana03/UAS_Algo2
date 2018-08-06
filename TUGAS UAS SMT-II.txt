@@ -1,0 +1,147 @@
+﻿program save_huruf_mutu;
+uses crt;
+type
+KHS = record
+jml,kmk:integer;
+nm,ag,mata,pr,mk,nim:string;
+absen,quiz,uts,uas,tugas,nilai,kalkulasi:real;
+hm:char;
+end;
+TKHS=array [1..100] of KHS;
+function menu:char;
+begin
+textColor(yellow);
+writeln('DATA NILAI MATAKULIAH':30);
+    writeln('*****************');
+    writeln('* 1.input data *');
+    writeln('* 2.Output Data *');
+    writeln('*****************');
+    writeln('* 0.Keluar      *');
+    writeln('*****************');
+    write('Pilih menu : ');readln(menu);
+end;
+
+procedure input(idx:integer;var data:TKHS);
+
+var
+i:integer;
+begin
+clrscr;
+writeln('DATA NILAI MATAKULIAH':30);
+  writeln('-----------------------------------------');
+writeln;
+write('Nama Mahasiswa    : ');
+  readln(data[idx].nm);
+write('NIM               : ');
+  readln(data[idx].nim);
+write('PRODI             : ');
+  readln(data[idx].pr);
+writeln('__________________________');
+write('Jumlah data mata kuliah  : ');
+ readln(data[idx].jml);
+
+for i := 1 to data[idx].jml do  
+begin    
+writeln('Masukkan data ke-', i);
+writeln;
+
+        write('KODE MATAKULIAH  : ');
+        readln(data[idx].kmk);
+        write('MATAKULIAH       : ');
+        readln(data[idx].mk);
+        writeln('__________________________');
+        write('nilai absen   : ');
+        readln(data[idx].absen);
+        write('nilai tugas   : ');
+        readln(data[idx].tugas);
+        write('nilai quiz    : ');
+        readln(data[idx].quiz);
+        write('nilai uts     : ');
+        readln(data[idx].uts);
+        write('nilai uas     : ');
+        readln(data[idx].uas);
+        writeln;
+        
+begin
+data[idx].nilai:=0.2*(data[idx].absen+data[idx].tugas+data[idx].quiz+data[idx].uts+data[idx].uas);
+end;        
+end;
+end;
+
+procedure proses(var data:KHS);
+begin
+if data.nilai>=85 then
+data.hm:='a'
+else if data.nilai>=70 then
+data.hm:='b'
+else if data.nilai>=55 then
+data.hm:='c'
+else if data.nilai>=40 then
+data.hm:='d'
+else if data.nilai>=0 then
+data.hm:='e';
+end;
+
+
+procedure output(jml:integer;data:TKHS);
+var
+i:integer;
+begin
+if jml=0 then
+begin
+writeln('belum ada data masuk!');
+readkey;
+end
+else
+for i:=1 to jml do
+
+begin
+  writeln;
+writeln('Nama Mahasiswa : ', data[i].nm);
+writeln('NIM            : ', data[i].nim);
+writeln('PRODI          : ', data[i].pr);
+
+  writeln('=============================================');
+writeln('| No | kode | M.kuliah | Nilai | Huruf mutu |');
+  writeln('=============================================');
+write(i:3);
+write(data[i].kmk:7);
+write(data[i].mk:12);
+write(data[i].nilai:9:3);
+writeln(data[i].hm:10);
+writeln('_____________________________________________');
+end;
+end;
+
+var
+no_menu,terus:char;
+jml_MHS,jml:integer;
+data:TKHS;
+begin
+jml_MHS:=0;
+repeat
+clrscr;
+no_menu:=menu;
+case no_menu of
+'1' : begin
+clrscr;
+textColor(yellow);
+repeat
+input(jml_MHS+1, data);
+proses(data[jml_MHS+1]);
+jml_MHS:=jml_MHS+1;
+jml:=jml+1;
+writeln('___________________');
+write('masukan data lagi y/n :');readln(terus);
+writeln;
+writeln;
+until(terus='n')
+end;
+'2' : begin
+textColor(yellow);
+clrscr;
+output(jml_MHS,data);readln;
+end;
+end;
+until(no_menu='0');
+end.
